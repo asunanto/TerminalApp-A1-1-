@@ -1,4 +1,21 @@
 require 'json'
+# https://mentalized.net/journal/2011/04/14/ruby-how-to-check-if-a-string-is-numeric/
+class String  #string class that checks for positive and numeric numbers
+    def numeric?
+      (Float(self) != nil)  rescue false
+    end
+    def positive?
+      (Float(self) > 0)  rescue false 
+    end
+end
+
+class NonNumericArgumentError < StandardError
+end
+class NegativeNumberError < StandardError
+end
+
+
+
 class WeekendList
     attr_accessor :list
     def initialize(list)
@@ -8,17 +25,27 @@ class WeekendList
     def add
         puts "What would you like to add to your fun list?"
         @new_activity = gets.chomp
+        begin
         puts "How long are you going to spend on this activity?"
-        @new_time = (gets.chomp).to_f
-        puts "Are you sure that you wanna add #{@new_activity} for #{@new_time}hours? (y/n)"
-        @confirmation = (gets.chomp).downcase
-        if @confirmation == 'y'
-            @list << {activity: @new_activity, time: @new_time}
-            File.write('Data.json', JSON.dump(@list))
-        elsif @confirmation == 'n'
+            @new_time = gets.chomp
+            raise NonNumericArgumentError, "it must be a number" if(!@new_time.numeric?)
+            raise NegativeNumberError, "it must be a positive number" if(!@new_time.positive?)
+            puts "Are you sure that you wanna add #{@new_activity} for #{@new_time}hours? (y/n)"
+            @confirmation = (gets.chomp).downcase
+            if @confirmation == 'y'
+                @list << {activity: @new_activity, time: @new_time}
+                File.write('Data.json', JSON.dump(@list))
+            elsif @confirmation == 'n'
             
-        else
-            puts "please enter y or n :D"
+            else
+                puts "please enter y or n :D"
+            end
+        rescue NonNumericArgumentError => e
+            puts e.message
+            retry
+        rescue NegativeNumberError => e
+            puts e.message
+            retry
         end
         
     end
@@ -32,10 +59,19 @@ class WeekendList
             when "redecide"
                 self.decide # recalls class method decide
             when "change time"
-                puts "How long would like to do #{@decided_act[:activity]}? "
-                @update_time = gets.chomp
-                @decided_act[:time] = @update_time
-                puts @decided_act
+                begin
+                    puts "How long would like to do #{@decided_act[:activity]}? "
+                    @update_time = gets.chomp
+                    raise NonNumericArgumentError, "it must be a number" if(!@update_time.numeric?)
+                    raise NegativeNumberError, "it must be a positive number" if(!@update_time.positive?)
+                    @decided_act[:time] = @update_time
+                rescue NonNumericArgumentError => e
+                    puts e.message
+                    retry
+                rescue NegativeNumberError => e
+                    puts e.message
+                    retry
+                end
             when "delete"
                 @list.delete_if { |hash| hash[:activity] == @decided_act[:activity] } # looks through each hash element in array and deletes the decided activity
                 puts @list
@@ -53,7 +89,7 @@ end
 # list_of_actities = [{activity: "basketball", time: 1.55},{activity: "tennis", time: 2.55},{activity: "picnic" ,time: 3.55}]
 begin
     list_of_activities = JSON.parse(File.read('Data.json'),:symbolize_names => true)
-rescue Errno::ENOENT => e
+rescue Errno::ENOENT  #catches error when there is no 'Data.json'
     list_of_activities = []
 end
 
