@@ -11,10 +11,12 @@ end
 
 class NonNumericArgumentError < StandardError
 end
+
 class NegativeNumberError < StandardError
 end
 
-
+class EmptyInputError <  StandardError
+end
 
 class WeekendList
     attr_accessor :list
@@ -23,23 +25,28 @@ class WeekendList
     end
 
     def add
-        puts "What would you like to add to your fun list?"
-        @new_activity = gets.chomp
         begin
-        puts "How long are you going to spend on this activity?"
+            puts "What would you like to add to your fun list?"
+            @new_activity = gets.chomp
+            raise EmptyInputError, "please enter your activity" if @new_activity.empty?
+            puts "How long are you going to spend on this activity?"
             @new_time = gets.chomp
-            raise NonNumericArgumentError, "it must be a number" if(!@new_time.numeric?)
+            raise NonNumericArgumentError, "Please enter a number" if(!@new_time.numeric?)
             raise NegativeNumberError, "it must be a positive number" if(!@new_time.positive?)
             puts "Are you sure that you wanna add #{@new_activity} for #{@new_time}hours? (y/n)"
             @confirmation = (gets.chomp).downcase
             if @confirmation == 'y'
                 @list << {activity: @new_activity, time: @new_time}
+                return @list.last
                 File.write('Data.json', JSON.dump(@list))
             elsif @confirmation == 'n'
             
             else
                 puts "please enter y or n :D"
             end
+        rescue EmptyInputError => e
+            puts e.message
+            retry
         rescue NonNumericArgumentError => e
             puts e.message
             retry
@@ -62,7 +69,7 @@ class WeekendList
                 begin
                     puts "How long would like to do #{@decided_act[:activity]}? "
                     @update_time = gets.chomp
-                    raise NonNumericArgumentError, "it must be a number" if(!@update_time.numeric?)
+                    raise NonNumericArgumentError, "Please enter a number" if(!@update_time.numeric?)
                     raise NegativeNumberError, "it must be a positive number" if(!@update_time.positive?)
                     @decided_act[:time] = @update_time
                 rescue NonNumericArgumentError => e
@@ -78,7 +85,7 @@ class WeekendList
             when "quit"
                 exit
             else
-
+                puts "You have entered the wrong options, please check your spelling :D"
         end
         rescue TypeError #empty array returns TypeError
             puts "your list is empty! please select 'add activity' option first"    
