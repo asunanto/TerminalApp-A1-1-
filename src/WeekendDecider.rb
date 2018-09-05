@@ -1,4 +1,6 @@
 require 'json'
+DEBUG_MODE = true #change DEBUG_MODE to false when running this file
+
 # https://mentalized.net/journal/2011/04/14/ruby-how-to-check-if-a-string-is-numeric/
 class String  #string class that checks for positive and numeric numbers
     def numeric?
@@ -33,12 +35,12 @@ class WeekendList
             @new_time = gets.chomp
             raise NonNumericArgumentError, "Please enter a number" if(!@new_time.numeric?)
             raise NegativeNumberError, "it must be a positive number" if(!@new_time.positive?)
-            puts "Are you sure that you wanna add #{@new_activity} for #{@new_time}hours? (y/n)"
+            puts "Are you sure that you wanna add #{@new_activity} for #{@new_time} hours? (y/n)"
             @confirmation = (gets.chomp).downcase
             if @confirmation == 'y'
                 @list << {activity: @new_activity, time: @new_time}
-                return @list.last
                 File.write('Data.json', JSON.dump(@list))
+                return @list
             elsif @confirmation == 'n'
             
             else
@@ -61,7 +63,8 @@ class WeekendList
         begin
             @decided_act = @list[rand(0...@list.length)] #rand(0...@list.length) returns random number from 0 to the length of list
             puts "should I #{@decided_act[:activity]} for #{"%.1f" % @decided_act[:time]} hours? => (options: redecide/change time/delete/quit)"# random range from 0 to length of list
-            decide_options = gets.chomp
+            decide_options = gets.chomp.strip #removes white spaces at the ends
+
             case decide_options
             when "redecide"
                 self.decide # recalls class method decide
@@ -81,41 +84,49 @@ class WeekendList
                 end
             when "delete"
                 @list.delete_if { |hash| hash[:activity] == @decided_act[:activity] } # looks through each hash element in array and deletes the decided activity
-                puts @list
+                return @list.include?(@decided_act)
             when "quit"
-                exit
+                return @list.include?(@decided_act)
             else
                 puts "You have entered the wrong options, please check your spelling :D"
+
         end
+        
         rescue TypeError #empty array returns TypeError
             puts "your list is empty! please select 'add activity' option first"    
         end
     end
 end
 
-# list_of_actities = [{activity: "basketball", time: 1.55},{activity: "tennis", time: 2.55},{activity: "picnic" ,time: 3.55}]
-begin
-    list_of_activities = JSON.parse(File.read('Data.json'),:symbolize_names => true)
-rescue Errno::ENOENT  #catches error when there is no 'Data.json'
-    list_of_activities = []
-end
 
-weekend = WeekendList.new(list_of_activities)
-options = ""
-while(options!="quit")
-    puts "What would like to do for your weekends? (options: decide/add activity/quit)"
-    options = gets.chomp
-    case options
-    when "decide"
-        weekend.decide
-    when "add activity"
-        weekend.add
-    when "quit"
-        
-    else
-        puts "Can you please enter the right options? Please check the spelling :D"
+
+if DEBUG_MODE == true
+
+else
+    begin
+        list_of_activities = JSON.parse(File.read('Data.json'),:symbolize_names => true)
+    rescue Errno::ENOENT  #catches error when there is no 'Data.json'
+        list_of_activities = []
+    end
+
+    weekend = WeekendList.new(list_of_activities)
+    options = ""
+    while(options!="quit")
+        puts "What would you like to do for your weekends? (options: decide/add activity/quit)"
+        options = gets.chomp
+        case options
+        when "decide"
+            quit = weekend.decide
+            exit if(quit == true)
+        when "add activity"
+            weekend.add
+        when "quit"
+        else
+            puts "Can you please enter the right options? Please check the spelling :D"
+        end
     end
 end
+
 # hash = {activity: "soccer", time:1}
 # weekend.add(hash)
 # puts weekend.list
