@@ -1,37 +1,35 @@
 require 'test/unit'
-require_relative '../WeekendDecider'
+require_relative '../WeekendList'
+require_relative 'fake_io'
 # When running this file please change DEBUG_MODE = true
-
+# Also thanks for the fake_io class you made Matt :D
 class WeekendDeciderTest < Test::Unit::TestCase
     
     def test_add
-        weekend = WeekendList.new([{activity: 'swimming', time: '2'},{activity: 'study', time: '2'}])
-        list = weekend.add
-        assert_equal([{activity: 'swimming', time: '2'},{activity: 'study', time: '2'},{activity: 'gym', time: '2'}],list)
+        out = fake_io(['gym','2','y']) do
+            weekend = WeekendList.new([{activity: 'swimming', time: '2'},{activity: 'study', time: '2'}])
+            weekend.add
+        end
+        assert_includes(out, {activity: 'gym', time: '2'}.to_s )
     end
-    # test notes - when prompted please enter the following
-    # What would you like to add to your fun list?
-    # enter: gym
-    # How long are you going to spend on this activity?
-    # enter: 2
+
 
     def test_decide
-        weekend = WeekendList.new([{activity: 'swimming', time: '2'},{activity: 'study', time: '2'}])
-        bool = weekend.decide
-        assert_equal(true,bool)
+        out = fake_io(['quit']) do
+            weekend = WeekendList.new([{activity: 'swimming', time: '2'},{activity: 'study', time: '2'}])
+            weekend.decide
+        end
+        assert_includes(out, 'true')
     end
-    # test notes - when prompted please enter the following
-    # should I 'activity' for 'time' hours?
-    # enter: quit
+ 
 
     def test_delete
-        weekend = WeekendList.new([{activity: 'swimming', time: '2'},{activity: 'study', time: '2'}])
-        bool = weekend.decide
-        assert_equal(false,bool)
+        out = fake_io(['delete']) do
+            weekend = WeekendList.new([{activity: 'swimming', time: '2'},{activity: 'study', time: '2'}])
+            weekend.decide
+        end
+        assert_includes(out, 'false')
     end
-    # test notes - when prompted please enter the following
-    # should I 'activity' for 'time' hours?
-    # enter: delete
-    
+
 
 end
