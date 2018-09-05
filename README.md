@@ -23,7 +23,7 @@ testing the app with TDD
 2) execute 'ruby WeekendDecider.rb' to run the file
 
 ### Screenshots
-![flowchart](docs/flowchart.png)
+![flowchart](./docs/flowchart.png)
  
 ### design & planning process 
 trello link
