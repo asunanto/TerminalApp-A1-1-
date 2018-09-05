@@ -27,7 +27,7 @@ testing the app
  
 ## H2 Details of design & planning process including,
 trello link
-[https://trello.com/invite/b/XDRQv9UF/d00f5bbf787e318b2b04a71698db8acd/assignment1-bo-sophia]
+https://trello.com/invite/b/XDRQv9UF/d00f5bbf787e318b2b04a71698db8acd/assignment1-bo-sophia
         Evidence of app idea brainstorming sessions
         app User/Workflow diagram
         Project plan & timeline
