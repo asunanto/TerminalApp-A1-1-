@@ -1,5 +1,5 @@
 # https://mentalized.net/journal/2011/04/14/ruby-how-to-check-if-a-string-is-numeric/
-DEBUG_MODE = true
+DEBUG_MODE = false
 
 class String  #string class that checks for positive and numeric numbers
     def numeric?
@@ -46,7 +46,7 @@ class WeekendList
             else
                 puts "please enter y or n :D"
             end
-            
+
         rescue EmptyInputError => e
             puts e.message
             retry
