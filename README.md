@@ -26,12 +26,9 @@ testing the app with TDD
 ![flowchart](./docs/flowchart.png)
  
 ### design & planning process 
-trello link
+Documented in trello 
 
 https://trello.com/invite/b/XDRQv9UF/d00f5bbf787e318b2b04a71698db8acd/assignment1-bo-sophia
         
-        Evidence of app idea brainstorming sessions
-        app User/Workflow diagram
-        Project plan & timeline
-        Screenshots of Trello board(s)
+   
 
