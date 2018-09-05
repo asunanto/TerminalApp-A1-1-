@@ -18,17 +18,18 @@ running the app
 1) Before running the program, make sure 'DEBUG_MODE=false'in WeekendList.rb
 2) execute 'ruby WeekendDecider.rb' to run the file
 
-testing the app
-1) before running 'WeekendDecider_test.rb' make sure 'DEBUG_MODE=true' in WeekendListrb
+testing the app with TDD
+1) before running 'WeekendDecider_test.rb' make sure 'DEBUG_MODE=true' in WeekendList.rb
 2) execute 'ruby WeekendDecider.rb' to run the file
 
 ### Screenshots
-![flowchart](flowchart.png)
+![flowchart](docs/flowchart.png)
  
-### Details of design & planning process including,
+### design & planning process 
 trello link
 
 https://trello.com/invite/b/XDRQv9UF/d00f5bbf787e318b2b04a71698db8acd/assignment1-bo-sophia
+        
         Evidence of app idea brainstorming sessions
         app User/Workflow diagram
         Project plan & timeline
