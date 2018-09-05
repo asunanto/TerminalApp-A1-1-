@@ -22,8 +22,9 @@ testing the app with TDD
 1) before running 'WeekendDecider_test.rb' make sure 'DEBUG_MODE=true' in WeekendList.rb
 2) execute 'ruby WeekendDecider.rb' to run the file
 
-### Screenshots
+### Screenshot
 ![flowchart](./docs/flowchart.png)
+![trello](./docs/trello.png)
  
 ### design & planning process 
 Documented in trello 
