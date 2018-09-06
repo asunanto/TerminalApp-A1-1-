@@ -20,7 +20,7 @@ running the app
 
 testing the app with TDD
 1) before running 'WeekendDecider_test.rb' make sure 'DEBUG_MODE=true' in WeekendList.rb
-2) execute 'ruby WeekendDecider.rb' to run the file
+2) execute 'ruby WeekendDecider_test.rb' to run the file
 
 ### Screenshot
 ![flowchart](./docs/flowchart.png)

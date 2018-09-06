@@ -66,7 +66,7 @@ class WeekendList
             puts "should I #{@decided_act[:activity]} for #{"%.1f" % @decided_act[:time]} hours? => (options: redecide/change time/delete/quit)"# random range from 0 to length of list
             decide_options = gets.chomp.strip #removes white spaces at the ends
 
-            case decide_options
+            case decide_options 
             when "redecide"
                 self.decide # recalls class method decide
             when "change time"
@@ -88,6 +88,7 @@ class WeekendList
                 puts @list.include?(@decided_act) if DEBUG_MODE == true
             when "quit"
                 puts @list.include?(@decided_act) if DEBUG_MODE == true
+                exit
             else
                 puts "You have entered the wrong options, please check your spelling :D"
 
